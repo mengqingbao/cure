@@ -19,6 +19,7 @@ import org.jivesoftware.smack.packet.Presence;
 
 import com.gqtcm.service.InSmsService;
 import com.gqtcm.util.InMessageStore;
+import com.gqtcm.util.StringUtils;
 import com.gqtcm.util.XmppTool;
 
 import com.gqtcm.activity.R;
@@ -97,7 +98,7 @@ public class MainTabActivity extends FragmentActivity{
 							Log.v("--tags--", "--tags-message--信息 "+message.getBody());
 						}
 						try {
-							InMessageStore.saveOrUpdate(userid, friendId, message.getBody(), true,MainTabActivity.this.getApplicationContext());
+							InMessageStore.saveOrUpdate(userid, friendId,StringUtils.getUsername(friendId), message.getBody(), true,StringUtils.getUsername(userid),MainTabActivity.this.getApplicationContext());
 						} catch (Exception e) {
 							System.out.println(e.getMessage()+"exception");
 							Log.i("--tags--", e.getMessage());
@@ -106,6 +107,7 @@ public class MainTabActivity extends FragmentActivity{
 						Intent intent = new Intent("pro.chinasoft.activity.InChatActivity");
 						intent.putExtra("content", message.getBody());
 						intent.putExtra("friendId", friendId);
+						intent.putExtra("friendNick", StringUtils.getUsername(friendId));
 				        sendBroadcast(intent);
 					}
 				});

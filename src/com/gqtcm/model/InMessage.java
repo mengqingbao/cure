@@ -8,6 +8,8 @@ public class InMessage {
 	private String content;
 	private Date createDate;
 	private boolean type;  //type:true message from friends ,false:msg from yourself
+	private String friendNick;
+	private String friendId;
 	public InUser getInUser() {
 		return inUser;
 	}
@@ -32,6 +34,16 @@ public class InMessage {
 	public void setType(boolean type) {
 		this.type = type;
 	}
-	
-	
+	public String getFriendNick() {
+		return friendNick;
+	}
+	public void setFriendNick(String friendNick) {
+		this.friendNick = friendNick;
+	}
+	public String getFriendId() {
+		return friendId;
+	}
+	public void setFriendId(String friendId) {
+		this.friendId = friendId;
+	}
 }

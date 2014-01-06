@@ -14,6 +14,7 @@ import com.gqtcm.component.InMessageArrayAdapter;
 import com.gqtcm.listener.SmileyOnItemClickListener;
 import com.gqtcm.model.InMessage;
 import com.gqtcm.util.InMessageStore;
+import com.gqtcm.util.StringUtils;
 import com.gqtcm.util.XmppTool;
 
 import com.gqtcm.activity.R;
@@ -52,13 +53,16 @@ public class InChatActivity extends Activity implements OnClickListener{
 	private InMessageArrayAdapter iadapter;
 	private List<View> views;
 	private ArrayList<ImageView> pointViews;
-	/** �α���ʾ���� */
+	
+	//点
 	private LinearLayout layout_point;
 
 	private ChatManager cm;
 	private Chat chat;
 	private String friendId;
+	private String friendNick;
 	private String userId;
+	private String nick;
 	private List<InMessage> msgs;
 	private Button sendBtn;
 	private Button btn1,camerabtn;
@@ -72,11 +76,13 @@ public class InChatActivity extends Activity implements OnClickListener{
 		listView = (ListView) this.findViewById(R.id.listview);
 		String defaultValue = getResources().getString(
 				R.string.username_store_key);
-		friendId = getIntent().getStringExtra(defaultValue);
+		friendId = getIntent().getStringExtra("friendId");
+		friendNick=getIntent().getStringExtra("friendNick");
 		SharedPreferences sharedPref = this.getSharedPreferences(
 				getString(R.string.in_chat_store), Context.MODE_PRIVATE);
 		userId = sharedPref.getString(getString(R.string.username_store_key),
 				"");
+		nick=sharedPref.getString(getString(R.string.username_store_key), "");
 		// get chat history data from db
 		msgs = InMessageStore.getMessages(userId, friendId, 0,5, this);
 		if(msgs==null){
@@ -290,23 +296,24 @@ public class InChatActivity extends Activity implements OnClickListener{
 			menuView.setVisibility(View.GONE);
 		}
 	}
-	//������Ϣ
+	//send message
 	public void sendMessage() {
 		EditText text = (EditText) this.findViewById(R.id.et_sendmessage);
 		String message = text.getText().toString();
 		if(message==null||message==""){
 			return;
 		}
-		// ˢ������
+		// refresh ui
 		refresh(message,false);
-		// ���浽sqlite
-		InMessageStore.saveOrUpdate(userId, friendId, message,false,this);
+		
+		//save the message comed from friends
+		InMessageStore.saveOrUpdate(userId, friendId,friendNick, message,false,nick,this);
 		try {
 			chat.sendMessage(message);
 		} catch (XMPPException e) {
 			System.out.println(e.getMessage()+"exception");
 		}
-		// ��������Ϣ�����ԭ�������
+		//clear the enter editText;
 		text.setText("");
 	}
 	

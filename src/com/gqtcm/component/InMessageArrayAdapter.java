@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class InMessageArrayAdapter extends BaseAdapter {
 
-	private List<InMessage> coll;// ��Ϣ��������
+	private List<InMessage> coll;
 	private LayoutInflater mInflater;
 	private Context context;
 	public InMessageArrayAdapter(Context context,List<InMessage> coll){

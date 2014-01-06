@@ -8,6 +8,7 @@ import org.jivesoftware.smack.XMPPConnection;
 
 import com.gqtcm.component.InUserArrayAdapter;
 import com.gqtcm.model.InUser;
+import com.gqtcm.util.StringUtils;
 import com.gqtcm.util.XmppTool;
 
 import com.gqtcm.activity.R;
@@ -52,7 +53,8 @@ public class FragmentPage2 extends Fragment{
 		Collection<RosterEntry> it = roster.getEntries();
 		for (RosterEntry rosterEnter : it) {
 			InUser iu = new InUser();
-			iu.setNick(rosterEnter.getUser());
+			iu.setNick(rosterEnter.getName());
+			iu.setUserId(rosterEnter.getUser());
 			friends.add(iu);
 		}
 
@@ -66,7 +68,8 @@ public class FragmentPage2 extends Fragment{
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), InChatActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putString("userid", user.getNick());
+				bundle.putString("friendId", user.getUserId());
+				bundle.putString("friendNick", user.getNick());
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}

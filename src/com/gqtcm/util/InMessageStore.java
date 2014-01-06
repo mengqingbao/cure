@@ -22,7 +22,7 @@ public class InMessageStore {
 	private static SQLiteDatabase db;
 
 	private static SQLiteDatabase getDb(boolean isRead,Context context) {
-		// 读取查询数据		
+			
 		InSQLiteOpenHelper isqloh = new InSQLiteOpenHelper(context);
 		if(isRead){
 			return isqloh.getReadableDatabase();
@@ -39,21 +39,26 @@ public class InMessageStore {
 				"select * from InMessage where userId=? and friendId=? order by id asc limit "+limit+" offset "+start,
 				new String[] { userId, friendId });
 		int count=c.getCount();
-		if (c.moveToFirst()) {// 判断游标是否为空
+		if (c.moveToFirst()) {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
 				inMessage.setContent(c.getString(c.getColumnIndex("content")));
 				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
+				InUser user=new InUser();
+				user.setNick(c.getString(c.getColumnIndex("nick")));
+				user.setUserId(c.getString(c.getColumnIndex("userId")));
+				inMessage.setFriendNick(c.getString(c.getColumnIndex("friendNick")));
+				inMessage.setFriendId(c.getString(c.getColumnIndex("friendId")));
 				result.add(inMessage);
-				c.moveToNext();// 移动到指定记录
+				c.moveToNext();
 			}
 		}
 
 		return result;
 	}
 
-	public static void saveOrUpdate(String userId, String friendId, String content,boolean type,Context context) {
+	public static void saveOrUpdate(String userId, String friendId,String friendNick, String content,boolean type,String nick,Context context) {
 		db = getDb(false,context);
 		ContentValues cv = new ContentValues();
 		cv.put("content", content);
@@ -65,6 +70,8 @@ public class InMessageStore {
 			cv.put("type", 0);
 		}
 		cv.put("createDate",new Date().getTime());
+		cv.put("nick", nick);
+		cv.put("friendNick", friendNick);
 		db.insert("InMessage", null, cv);
 		db.close();
 	}
@@ -81,15 +88,19 @@ public class InMessageStore {
 		Cursor c = db.rawQuery(
 				"select * from InMessage group by friendId order by createDate asc", null);
 		int count=c.getCount();
-		if (c.moveToFirst()) {// 判断游标是否为空
+		if (c.moveToFirst()) {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
-				InUser user=new InUser();
-				user.setNick(c.getString(c.getColumnIndex("userId")));
 				inMessage.setContent(c.getString(c.getColumnIndex("content")));
-				inMessage.setInUser(user);
+				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
+				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
+				InUser user=new InUser();
+				user.setNick(c.getString(c.getColumnIndex("nick")));
+				user.setUserId(c.getString(c.getColumnIndex("userId")));
+				inMessage.setFriendNick(c.getString(c.getColumnIndex("friendNick")));
+				inMessage.setFriendId(c.getString(c.getColumnIndex("friendId")));
 				result.add(inMessage);
-				c.moveToNext();// 移动到指定记录
+				c.moveToNext();
 			}
 		}
 
