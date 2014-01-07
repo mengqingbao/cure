@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/in_user_list_item"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal" 
+    android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/mr_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/moren" />
+
+        <TextView
+            android:id="@+id/mr_nick"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/mr_avatar"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="18sp"
+            android:textColor="#000066"
+            android:text="张仲景" />
+
+        <TextView
+            android:id="@+id/mr_TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/mr_nick"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="问:肚子疼" />
+
+        <TextView
+            android:id="@+id/mr_TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/mr_TextView03"
+            android:textColor="#9A9A9A"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:text="前天下午" />
+
+        <TextView
+            android:id="@+id/mr_TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="#000066"
+            android:textSize="12sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:text="有效" />
+
+</RelativeLayout>
