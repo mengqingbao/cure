@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/in_user_list_item"
     android:layout_width="fill_parent"
-    android:layout_height="55dp"
+    android:layout_height="50dp"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:background="@color/white"
     android:orientation="horizontal" >
 
         <ImageView

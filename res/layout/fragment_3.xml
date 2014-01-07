@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f0f0e0" >
+    android:background="#f0f0e0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/frag3_rl_layout"
@@ -33,18 +32,57 @@
             android:text="寻医问药"
             android:textColor="#ffffff"
             android:textSize="20.0sp" />
+
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fr3_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frag3_rl_layout"
+	 >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/u52" />
+        
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/fr4_btns_ly"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/fr3_ad"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/fr3_ly_btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="寻医" />
+
+        <Button
+            android:id="@+id/fr3_ly_btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/fr3_ly_btn1"
+            android:text="问药" />
+
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/fragment_3_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/frag3_rl_layout"
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_marginTop="10.0dip"
+        android:layout_below="@+id/fr4_btns_ly"
+        android:layout_marginLeft="0.0dip"
+        android:layout_marginRight="0.0dip"
+        android:layout_marginTop="0.0dip"
         android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:dividerHeight="5dp"
+        android:dividerHeight="1dp"
         android:scrollbars="none" />
 
 </RelativeLayout>
