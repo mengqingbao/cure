@@ -40,7 +40,7 @@ public class Fr2ListAdapter extends  ArrayAdapter<Care> {
 					null);
 			((TextView) convertView.findViewById(R.id.in_fr2_tv1)).setText(car.getTitle());
 			((TextView) convertView.findViewById(R.id.in_fr2_tv2)).setText(car.getDraw());
-			((TextView) convertView.findViewById(R.id.in_fr2_tv3)).setText("");
+			((TextView) convertView.findViewById(R.id.in_fr2_tv3)).setText("360 / 95%");
 		return convertView;
 	}
 

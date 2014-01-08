@@ -13,6 +13,18 @@
         android:orientation="vertical" >
 
         <Button
+            android:id="@+id/care_comment_btn_back"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_btn_back"
+            android:onClick="cancel"
+            android:paddingLeft="10dp"
+            android:text="返回"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+        <Button
             android:id="@+id/care_comment_add_chat"
             style="@drawable/selector_btn_add"
             android:layout_width="60dp"
