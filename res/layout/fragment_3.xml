@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f0f0e0" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@drawable/u0_normal" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:id="@+id/frag3_rl_layout"
@@ -37,7 +37,7 @@
 
     <RelativeLayout
         android:id="@+id/fr3_ad"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frag3_rl_layout"
 	 >
@@ -46,7 +46,9 @@
             android:id="@+id/imageView1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/u52" />
+            android:scaleType="fitXY"
+            android:src="@drawable/u52" 
+            />
         
     </RelativeLayout>
 
@@ -62,13 +64,15 @@
             android:id="@+id/fr3_ly_btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="寻医" />
+            android:background="@drawable/fr3_btn"
+			android:text="寻医" />
 
         <Button
             android:id="@+id/fr3_ly_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/fr3_ly_btn1"
+            android:background="@drawable/fr3_btn"
             android:text="问药" />
 
     </RelativeLayout>
@@ -80,7 +84,8 @@
         android:layout_below="@+id/fr4_btns_ly"
         android:layout_marginLeft="0.0dip"
         android:layout_marginRight="0.0dip"
-        android:layout_marginTop="0.0dip"
+        android:layout_marginTop="10.0dip"
+        android:background="#fff"
         android:cacheColorHint="#00000000"
         android:dividerHeight="1dp"
         android:scrollbars="none" />

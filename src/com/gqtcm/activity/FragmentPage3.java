@@ -1,13 +1,18 @@
 package com.gqtcm.activity;
 
-import com.gqtcm.activity.R;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.gqtcm.adapter.Fr3ListAdapter;
+import com.gqtcm.listener.Fr3ItemOnClickListener;
+import com.gqtcm.model.StringVar;
 
 public class FragmentPage3 extends Fragment{
 
@@ -17,14 +22,16 @@ public class FragmentPage3 extends Fragment{
 
 		 ListView listView = (ListView) view.findViewById(R.id.fragment_3_list);
 
-         String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-              "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-         "Linux", "OS/2" };
-         ArrayAdapter<String> files = new ArrayAdapter<String>(getActivity(), 
-                  android.R.layout.simple_list_item_1, 
-                  values);
-
-         listView.setAdapter(files);
+		 List<StringVar> list=new ArrayList<StringVar>();
+		for (int i = 0; i < 5; i++) {
+			StringVar sv = new StringVar();
+			sv.setStr1("附近的医生");
+			sv.setStr2("总共1021位");
+			list.add(sv);
+		}
+         Fr3ListAdapter adapter = new Fr3ListAdapter(this.getActivity(),R.layout.in_frag3_list_item,list);
+         listView.setAdapter(adapter);
+         listView.setOnItemClickListener(new Fr3ItemOnClickListener(this.getActivity()));
          return view;		
 	}	
 }

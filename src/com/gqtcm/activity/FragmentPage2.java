@@ -1,79 +1,36 @@
 package com.gqtcm.activity;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.RosterEntry;
-import org.jivesoftware.smack.XMPPConnection;
-
-import com.gqtcm.component.InUserArrayAdapter;
-import com.gqtcm.model.InUser;
-import com.gqtcm.util.StringUtils;
-import com.gqtcm.util.XmppTool;
-
-import com.gqtcm.activity.R;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
-public class FragmentPage2 extends Fragment{
+import com.gqtcm.adapter.Fr2ListAdapter;
+import com.gqtcm.listener.Fr2ItemOnClickListener;
+import com.gqtcm.listener.Fr3ItemOnClickListener;
+import com.gqtcm.model.Care;
 
-	private ArrayAdapter<InUser> friends = null;
-	private Button btn;
+public class FragmentPage2 extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_2, container, false);
-		btn=(Button) view.findViewById(R.id.frag2_addFriend);
-		btn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(FragmentPage2.this.getActivity(), SearchFriendActivity.class);
-				startActivity(intent);
-			} 
-			
-		});
 		ListView listView = (ListView) view.findViewById(R.id.fragment_2_list);
-		friends = new InUserArrayAdapter(getActivity(),
-				R.layout.in_user_list_item);
-
-		XMPPConnection conn = XmppTool.getConnection();
-		Roster roster = conn.getRoster();
-		Collection<RosterEntry> it = roster.getEntries();
-		for (RosterEntry rosterEnter : it) {
-			InUser iu = new InUser();
-			iu.setNick(rosterEnter.getName());
-			iu.setUserId(rosterEnter.getUser());
-			friends.add(iu);
+		List<Care> list = new ArrayList<Care>();
+		for (int i = 0; i < 5; i++) {
+			Care care = new Care();
+			care.setTitle("高血糖");
+			care.setDraw("浑身乏力，咳嗽。");
+			list.add(care);
 		}
-
-		listView.setAdapter(friends);
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int postion, long arg3) {
-				InUser user = friends.getItem(postion);
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), InChatActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("friendId", user.getUserId());
-				bundle.putString("friendNick", user.getNick());
-				intent.putExtras(bundle);
-				startActivity(intent);
-			}
-		});
+		Fr2ListAdapter fla=new Fr2ListAdapter(this.getActivity(),R.layout.in_frag2_list_item,list);
+		listView.setAdapter(fla);
+		listView.setOnItemClickListener(new Fr2ItemOnClickListener(this.getActivity()));
 		return view;
 	}
 }
