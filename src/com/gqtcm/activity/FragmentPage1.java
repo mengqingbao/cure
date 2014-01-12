@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.gqtcm.adapter.InMessageRecordArrayAdapter;
 import com.gqtcm.listener.Fr2ItemOnClickListener;
 import com.gqtcm.model.InMessage;
-import com.gqtcm.util.InMessageStore;
+import com.gqtcm.persistence.InMessageStore;
 
 public class FragmentPage1 extends Fragment{
 	@Override
@@ -24,12 +24,12 @@ public class FragmentPage1 extends Fragment{
 
 		 ListView listView = (ListView) view.findViewById(R.id.fragment_1_list);
          
-         List<InMessage> msgs = InMessageStore.getUserMessage(this.getActivity());
+         List<InMessage> msgs = InMessageStore.getInstance().getUserMessage(this.getActivity());
          
          InMessageRecordArrayAdapter friends = new InMessageRecordArrayAdapter(getActivity(),
         		 msgs);
  		listView.setAdapter(friends);
- 		listView.setOnItemClickListener(new Fr2ItemOnClickListener(this.getActivity()));
+ 		//listView.setOnItemClickListener(new Fr2ItemOnClickListener(this.getActivity()));
          return view;
 	}
 	@Override

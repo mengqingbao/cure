@@ -23,7 +23,7 @@ public class XmppTool {
 	private static void openConnection() {
 		try {
 			//服务器连接地址
-			ConnectionConfiguration connConfig = new ConnectionConfiguration("192.168.100.101", 5222);
+			ConnectionConfiguration connConfig = new ConnectionConfiguration("192.168.1.101", 5222);
 
 			con = new XMPPConnection(connConfig);
 			con.connect();

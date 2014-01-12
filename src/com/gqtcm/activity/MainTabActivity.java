@@ -17,8 +17,8 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 
+import com.gqtcm.persistence.InMessageStore;
 import com.gqtcm.service.InSmsService;
-import com.gqtcm.util.InMessageStore;
 import com.gqtcm.util.StringUtils;
 import com.gqtcm.util.XmppTool;
 
@@ -39,8 +39,8 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 /**
- * @author yangyu
- *	�����������Զ���TabHost
+ * @author mengqingbao
+ *	
  */
 public class MainTabActivity extends FragmentActivity{	
 	private FragmentTabHost mTabHost;
@@ -98,7 +98,7 @@ public class MainTabActivity extends FragmentActivity{
 							Log.v("--tags--", "--tags-message--信息 "+message.getBody());
 						}
 						try {
-							InMessageStore.saveOrUpdate(userid, friendId,StringUtils.getUsername(friendId), message.getBody(), true,StringUtils.getUsername(userid),MainTabActivity.this.getApplicationContext());
+							InMessageStore.getInstance().saveOrUpdate(userid, friendId,StringUtils.getUsername(friendId), message.getBody(), true,StringUtils.getUsername(userid),MainTabActivity.this.getApplicationContext());
 						} catch (Exception e) {
 							System.out.println(e.getMessage()+"exception");
 							Log.i("--tags--", e.getMessage());
@@ -227,7 +227,7 @@ public class MainTabActivity extends FragmentActivity{
 	                          // 点击“<strong>确认</strong>”后的操作    
 	                   		XmppTool.closeConnection();
 	                   		//关闭数据库
-	                   		InMessageStore.close();
+	                   		InMessageStore.getInstance().close();
 	                   		System.exit(0);
 	                   		android.os.Process.killProcess(android.os.Process.myPid());
 	                                            

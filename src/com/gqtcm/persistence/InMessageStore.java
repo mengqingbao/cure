@@ -1,38 +1,32 @@
-package com.gqtcm.util;
+package com.gqtcm.persistence;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.gqtcm.database.InSQLiteOpenHelper;
-import com.gqtcm.model.InMessage;
-import com.gqtcm.model.InUser;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class InMessageStore {
-	
-	private static SQLiteDatabase db;
+import com.gqtcm.model.InMessage;
+import com.gqtcm.model.InUser;
 
-	private static SQLiteDatabase getDb(boolean isRead,Context context) {
-			
-		InSQLiteOpenHelper isqloh = new InSQLiteOpenHelper(context);
-		if(isRead){
-			return isqloh.getReadableDatabase();
-		}else{
-			return isqloh.getWritableDatabase();
-		}
-		//return SQLiteDatabase.openOrCreateDatabase("data/data/pro.chinasoft.activity/databases/mydata.db", null);
+public class InMessageStore extends BaseDao {
+
+	private static InMessageStore ims;
+	public InMessageStore(){
 	}
-
-	public static  List<InMessage> getMessages(String userId, String friendId,int start ,int limit,Context context) {
+	
+	//自举
+	public static InMessageStore getInstance(){
+		if(ims==null){
+			ims=new InMessageStore();
+		}
+		return ims;
+	}
+	
+	public List<InMessage> getMessages(String userId, String friendId,int start ,int limit,Context context) {
 		List<InMessage> result = new ArrayList<InMessage>();
 		db = getDb(true,context);
 		Cursor c = db.rawQuery(
@@ -42,13 +36,13 @@ public class InMessageStore {
 		if (c.moveToFirst()) {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
-				inMessage.setContent(c.getString(c.getColumnIndex("content")));
+				inMessage.setContent(getString(c,"content"));
 				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
 				InUser user=new InUser();
-				user.setNick(c.getString(c.getColumnIndex("nick")));
+				user.setNick(getString(c,"nick"));
 				user.setUserId(c.getString(c.getColumnIndex("userId")));
-				inMessage.setFriendNick(c.getString(c.getColumnIndex("friendNick")));
+				inMessage.setFriendNick(getString(c,"friendNick"));
 				inMessage.setFriendId(c.getString(c.getColumnIndex("friendId")));
 				result.add(inMessage);
 				c.moveToNext();
@@ -58,7 +52,7 @@ public class InMessageStore {
 		return result;
 	}
 
-	public static void saveOrUpdate(String userId, String friendId,String friendNick, String content,boolean type,String nick,Context context) {
+	public  void saveOrUpdate(String userId, String friendId,String friendNick, String content,boolean type,String nick,Context context) {
 		db = getDb(false,context);
 		ContentValues cv = new ContentValues();
 		cv.put("content", content);
@@ -76,13 +70,13 @@ public class InMessageStore {
 		db.close();
 	}
 	
-	public static void close(){
+	public  void close(){
 		if(db!=null){
 			db.close();
 		}
 	}
 
-	public static List<InMessage> getUserMessage(Context context) {
+	public  List<InMessage> getUserMessage(Context context) {
 		List<InMessage> result = new ArrayList<InMessage>();
 		db = getDb(true,context);
 		Cursor c = db.rawQuery(
@@ -91,13 +85,13 @@ public class InMessageStore {
 		if (c.moveToFirst()) {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
-				inMessage.setContent(c.getString(c.getColumnIndex("content")));
+				inMessage.setContent(getString(c,"content"));
 				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
 				InUser user=new InUser();
-				user.setNick(c.getString(c.getColumnIndex("nick")));
+				user.setNick(getString(c,"nick"));
 				user.setUserId(c.getString(c.getColumnIndex("userId")));
-				inMessage.setFriendNick(c.getString(c.getColumnIndex("friendNick")));
+				inMessage.setFriendNick(getString(c,"friendNick"));
 				inMessage.setFriendId(c.getString(c.getColumnIndex("friendId")));
 				result.add(inMessage);
 				c.moveToNext();

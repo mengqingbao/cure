@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gqtcm.activity.CareCommentActivity;
+import com.gqtcm.activity.CareDetailActivity;
 
 public class Fr3ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	private Context context;

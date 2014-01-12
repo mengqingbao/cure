@@ -64,8 +64,8 @@ public class InMessageRecordArrayAdapter extends BaseAdapter {
 		viewHolder.tvDate.setText(DateUtil.toString(item.getCreateDate()));
 		//viewHolder.tvUserName.setText(item.getInUser().getNick());
 		if(!TextUtils.isEmpty(item.getContent())){
-		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, item.getContent());
-		viewHolder.tvContent.setText(spannableString);
+		//SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, item.getContent());
+		viewHolder.tvContent.setText(item.getContent());
 		}else{
 			viewHolder.tvContent.setText(item.getContent());
 		}

@@ -118,6 +118,4 @@ public class SmileyRelativeLayout extends RelativeLayout implements
 
 		}
 	}
-	
-
 }

@@ -1,6 +1,6 @@
 package com.gqtcm.adapter;
 
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -8,13 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.gqtcm.activity.R;
 import com.gqtcm.model.Care;
-import com.gqtcm.model.InUser;
-import com.gqtcm.model.StringVar;
 
 public class Fr2ListAdapter extends  ArrayAdapter<Care> {
 	public Fr2ListAdapter(Context context, int resource,
@@ -40,7 +37,14 @@ public class Fr2ListAdapter extends  ArrayAdapter<Care> {
 					null);
 			((TextView) convertView.findViewById(R.id.in_fr2_tv1)).setText(car.getTitle());
 			((TextView) convertView.findViewById(R.id.in_fr2_tv2)).setText(car.getDraw());
-			((TextView) convertView.findViewById(R.id.in_fr2_tv3)).setText("360 / 95%");
+			int total=car.getGood()+car.getNornal()+car.getBad();
+			String str=null;
+			if(total!=0){
+			 DecimalFormat fmt = new DecimalFormat(".#%");
+			 float rate=(float)car.getGood()/(float)total;
+			 str=fmt.format(rate);
+			}
+			((TextView) convertView.findViewById(R.id.in_fr2_tv3)).setText("评价："+total+" / "+str);
 		return convertView;
 	}
 

@@ -13,7 +13,7 @@ import com.gqtcm.adapter.ViewPagerAdapter;
 import com.gqtcm.component.InMessageArrayAdapter;
 import com.gqtcm.listener.SmileyOnItemClickListener;
 import com.gqtcm.model.InMessage;
-import com.gqtcm.util.InMessageStore;
+import com.gqtcm.persistence.InMessageStore;
 import com.gqtcm.util.StringUtils;
 import com.gqtcm.util.XmppTool;
 
@@ -84,7 +84,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 				"");
 		nick=sharedPref.getString(getString(R.string.username_store_key), "");
 		// get chat history data from db
-		msgs = InMessageStore.getMessages(userId, friendId, 0,5, this);
+		msgs = InMessageStore.getInstance().getMessages(userId, friendId, 0,5, this);
 		if(msgs==null){
 			msgs=new ArrayList<InMessage>();
 		}
@@ -127,7 +127,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 	@Override
 	public void onBackPressed() {
 		unregisterReceiver(mReceiver);
-		InMessageStore.close();
+		InMessageStore.getInstance().close();
 		this.finish();
 	}
 
@@ -307,7 +307,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 		refresh(message,false);
 		
 		//save the message comed from friends
-		InMessageStore.saveOrUpdate(userId, friendId,friendNick, message,false,nick,this);
+		InMessageStore.getInstance().saveOrUpdate(userId, friendId,friendNick, message,false,nick,this);
 		try {
 			chat.sendMessage(message);
 		} catch (XMPPException e) {

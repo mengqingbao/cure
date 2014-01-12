@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/u0_normal" >
+    android:background="#f0f0e0" >
 
     <RelativeLayout
-        android:id="@+id/care_comment_rl_layout"
+        android:id="@+id/care_detail_rl_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/top_menu_bg"
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/care_comment_btn_back"
+            android:id="@+id/care_detail_btn_back"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -25,7 +25,7 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
         <Button
-            android:id="@+id/care_comment_add_chat"
+            android:id="@+id/care_detail_add_chat"
             style="@drawable/selector_btn_add"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -42,16 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="自珍评价"
+            android:text="自珍"
             android:textColor="#ffffff"
             android:textSize="20.0sp" />
     </RelativeLayout>
-     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-        android:layout_below="@+id/care_comment_rl_layout">
-        <include  layout="@layout/care_comment_button"/>
-    </RelativeLayout>
+
 
 
 </RelativeLayout>
