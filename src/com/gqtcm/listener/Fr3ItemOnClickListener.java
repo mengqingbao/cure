@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.gqtcm.activity.CareCommentActivity;
-import com.gqtcm.activity.CareDetailActivity;
+import com.gqtcm.activity.DoctorListActivity;
+import com.gqtcm.activity.DoctorSearchActivity;
 
 public class Fr3ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	private Context context;
@@ -17,7 +17,11 @@ public class Fr3ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> adpater, View view, int postion, long id) {
 		Intent intent = new Intent();
-		intent.setClass(context, CareCommentActivity.class);
+		if(postion==0){
+		  intent.setClass(context, DoctorListActivity.class);
+		}else{
+		  intent.setClass(context, DoctorSearchActivity.class);
+		}
 		Bundle bundle = new Bundle();
 		/*bundle.putString("friendId", user.getUserId());
 		bundle.putString("friendNick", user.getNick());*/

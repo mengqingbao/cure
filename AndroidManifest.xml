@@ -74,6 +74,14 @@
             android:name="com.gqtcm.activity.CareDetailActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        <activity
+            android:name="com.gqtcm.activity.DoctorListActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.gqtcm.activity.DoctorSearchActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>        
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@ public class Fr2ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> adpater, View view, int postion, long id) {
 		Intent intent = new Intent();
-		intent.setClass(context, CareCommentActivity.class);
+		intent.setClass(context, CareDetailActivity.class);
 		Bundle bundle = new Bundle();
 		/*bundle.putString("friendId", user.getUserId());
 		bundle.putString("friendNick", user.getNick());*/

@@ -50,7 +50,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
                 android:text="使用 390/96%"
-                android:textColor="#000"
+                android:textColor="#000033"
                 android:textSize="12sp" />
 
         </RelativeLayout>
