@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.gqtcm.adapter.DoctorListAdapter;
+import com.gqtcm.listener.DoctorDetailItemOnClickListener;
 import com.gqtcm.model.Doctor;
 
 public class DoctorSearchActivity extends Activity implements OnClickListener{
@@ -23,6 +24,7 @@ public class DoctorSearchActivity extends Activity implements OnClickListener{
 		backBtn=(Button) this.findViewById(R.id.doctor_search_btn_back);
 		backBtn.setOnClickListener(this);
 		listView=(ListView) this.findViewById(R.id.doctor_search_list_view);
+		listView.setOnItemClickListener(new DoctorDetailItemOnClickListener(this));
 		initData();
 	}
 	

@@ -81,7 +81,19 @@
         <activity
             android:name="com.gqtcm.activity.DoctorSearchActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>        
+        </activity>
+        <activity
+            android:name="com.gqtcm.activity.CareAdviceActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity> 
+        <activity
+            android:name="com.gqtcm.activity.CareResultActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity> 
+        <activity
+            android:name="com.gqtcm.activity.DoctorDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>                               
     </application>
 
 </manifest>

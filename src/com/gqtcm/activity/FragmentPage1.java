@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.gqtcm.adapter.InMessageRecordArrayAdapter;
-import com.gqtcm.listener.Fr2ItemOnClickListener;
+import com.gqtcm.listener.Fr1ItemOnClickListener;
 import com.gqtcm.model.InMessage;
 import com.gqtcm.persistence.InMessageStore;
 
@@ -29,7 +29,7 @@ public class FragmentPage1 extends Fragment{
          InMessageRecordArrayAdapter friends = new InMessageRecordArrayAdapter(getActivity(),
         		 msgs);
  		listView.setAdapter(friends);
- 		//listView.setOnItemClickListener(new Fr2ItemOnClickListener(this.getActivity()));
+ 		listView.setOnItemClickListener(new Fr1ItemOnClickListener(this.getActivity()));
          return view;
 	}
 	@Override
