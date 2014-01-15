@@ -1,5 +1,7 @@
 package com.gqtcm.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ListView;
 import com.gqtcm.adapter.DoctorListAdapter;
 import com.gqtcm.listener.DoctorDetailItemOnClickListener;
 import com.gqtcm.model.Doctor;
+import com.gqtcm.persistence.DoctorStore;
 
 public class DoctorListActivity extends Activity implements OnClickListener{
 
@@ -30,6 +33,7 @@ public class DoctorListActivity extends Activity implements OnClickListener{
 	
 	public void initData(){
 		adpater=new DoctorListAdapter(this,R.layout.doctor_list_item);
+		List<Doctor> drs=DoctorStore.getInstance().queryPage(0, 10, this);
 		for(int i=0;i<5;i++){
 			Doctor doctor=new Doctor();
 			doctor.setNick("张仲景"+i);

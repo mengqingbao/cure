@@ -37,7 +37,7 @@ public class DoctorListAdapter extends  ArrayAdapter<Doctor> {
 					null);
 			((TextView) convertView.findViewById(R.id.doctor_nick)).setText(doctor.getNick());
 			((TextView) convertView.findViewById(R.id.doctor_distance)).setText(doctor.getDesc());
-			//((TextView) convertView.findViewById(R.id)).setText("评价："+total+" / "+str);
+			((TextView) convertView.findViewById(R.id.textView1)).setText(doctor.getDesc());
 		return convertView;
 	}
 
