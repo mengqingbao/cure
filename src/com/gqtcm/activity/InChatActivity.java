@@ -76,8 +76,8 @@ public class InChatActivity extends Activity implements OnClickListener{
 		listView = (ListView) this.findViewById(R.id.listview);
 		String defaultValue = getResources().getString(
 				R.string.username_store_key);
-		friendId = getIntent().getStringExtra("friendId");
-		friendNick=getIntent().getStringExtra("friendNick");
+		friendId = getIntent().getStringExtra("docId");
+		friendNick=getIntent().getStringExtra("docNick");
 		SharedPreferences sharedPref = this.getSharedPreferences(
 				getString(R.string.in_chat_store), Context.MODE_PRIVATE);
 		userId = sharedPref.getString(getString(R.string.username_store_key),
@@ -93,7 +93,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 		cm = XmppTool.getConnection().getChatManager();
 		chat = cm.createChat(friendId, null);
 
-		// ע��㲥������������������Ϣ
+		// 注册接受其
 		IntentFilter intentFilter = new IntentFilter(
 				"pro.chinasoft.activity.InChatActivity");
 		registerReceiver(mReceiver, intentFilter);

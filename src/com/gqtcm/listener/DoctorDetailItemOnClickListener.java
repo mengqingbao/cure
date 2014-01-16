@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gqtcm.activity.DoctorDetailActivity;
+import com.gqtcm.model.Doctor;
 
 public class DoctorDetailItemOnClickListener implements  AdapterView.OnItemClickListener{
 	private Context context;
@@ -17,9 +18,9 @@ public class DoctorDetailItemOnClickListener implements  AdapterView.OnItemClick
 	public void onItemClick(AdapterView<?> adpater, View view, int postion, long id) {
 		Intent intent = new Intent();
 		intent.setClass(context, DoctorDetailActivity.class);
+		Doctor doctor=(Doctor) adpater.getItemAtPosition(postion);
 		Bundle bundle = new Bundle();
-		/*bundle.putString("friendId", user.getUserId());
-		bundle.putString("friendNick", user.getNick());*/
+		bundle.putString("docId", doctor.getUserId());
 		intent.putExtras(bundle);
 		context.startActivity(intent);
 	}

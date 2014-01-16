@@ -12,9 +12,14 @@ public class BaseDao {
 	public String getString(Cursor c,String key){
 		String result;
 		try {
-			result = new String(c.getBlob(c.getColumnIndex(key)),"GBK");
+			byte[] temp=c.getBlob(c.getColumnIndex(key));
+			if(temp!=null){
+			result = new String(c.getBlob(c.getColumnIndex(key)),"gb2312");
+			}else{
+				return "";
+			}
 		} catch (UnsupportedEncodingException e) {
-			return "system erro,please contract us";
+			return "error";
 		}
 		return result;
 	}

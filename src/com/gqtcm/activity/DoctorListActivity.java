@@ -33,7 +33,7 @@ public class DoctorListActivity extends Activity implements OnClickListener{
 	
 	public void initData(){
 		adpater=new DoctorListAdapter(this,R.layout.doctor_list_item);
-		List<Doctor> drs=DoctorStore.getInstance().queryPage(0, 10, this);
+		List<Doctor> drs=DoctorStore.getInstance(this).queryPage("1",0, 10);
 		for(int i=0;i<5;i++){
 			Doctor doctor=new Doctor();
 			doctor.setNick("张仲景"+i);

@@ -77,7 +77,11 @@ public class FragmentPage3 extends Fragment  implements OnClickListener{
 		for (Config cfg:cfgs) {
 			StringVar sv = new StringVar();
 			sv.setStr1(cfg.getTitle());
-			sv.setStr2(cfg.getExta()+cfg.getDesc());
+			if(cfg.getExta()>0){
+				sv.setStr2(cfg.getExta()+cfg.getDesc());
+			}else{
+				sv.setStr2(cfg.getDesc());
+			}
 			list.add(sv);
 		}
          adapter = new Fr3ListAdapter(this.getActivity(),R.layout.in_frag3_list_item,list);
