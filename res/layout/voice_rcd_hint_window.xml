@@ -30,7 +30,7 @@
                 android:src="@drawable/voice_rcd_hint" />
 
             <ImageView
-                android:id="@+id/volume"
+                android:id="@+id/voice_value_image"
                 android:layout_width="43sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

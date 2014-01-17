@@ -9,11 +9,14 @@ import com.gqtcm.util.FaceConversionUtil;
 
 import com.gqtcm.activity.R;
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ public class InMessageArrayAdapter extends BaseAdapter {
 	private List<InMessage> coll;
 	private LayoutInflater mInflater;
 	private Context context;
+	private MediaPlayer mMediaPlayer = new MediaPlayer();
 	public InMessageArrayAdapter(Context context,List<InMessage> coll){
 		if(coll!=null){
 		this.coll=coll;
@@ -34,7 +38,7 @@ public class InMessageArrayAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		InMessage item = coll.get(position);
+		final InMessage item = coll.get(position);
 		System.out.println(item.getCreateDate());
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
@@ -60,12 +64,24 @@ public class InMessageArrayAdapter extends BaseAdapter {
 		
 		viewHolder.tvSendTime.setText(DateUtil.toString(item.getCreateDate()));
 		//viewHolder.tvUserName.setText(item.getInUser().getNick());
-		if(!TextUtils.isEmpty(item.getContent())){
-		SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, item.getContent());
-		viewHolder.tvContent.setText(spannableString);
-		}else{
-			viewHolder.tvContent.setText(item.getContent());
+		if (!TextUtils.isEmpty(item.getContent())) {
+			if (item.getContent().contains(".amr")) {
+				viewHolder.tvContent.setText("");
+				viewHolder.tvContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.chatto_voice_playing, 0);
+			}else{
+				SpannableString spannableString = FaceConversionUtil.getInstace()
+						.getExpressionString(context, item.getContent());
+				viewHolder.tvContent.setText(spannableString);
+			}
 		}
+		viewHolder.tvContent.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				if (item.getContent().contains(".amr")) {
+					playMusic(android.os.Environment.getExternalStorageDirectory()+"/"+item.getContent()) ;
+				}
+			}
+		});
 		return convertView;
 	}
 	
@@ -89,4 +105,26 @@ public class InMessageArrayAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	private void playMusic(String name) {
+		try {
+			if (mMediaPlayer.isPlaying()) {
+				mMediaPlayer.stop();
+			}
+			mMediaPlayer.reset();
+			mMediaPlayer.setDataSource(name);
+			mMediaPlayer.prepare();
+			mMediaPlayer.start();
+			mMediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				public void onCompletion(MediaPlayer mp) {
+
+				}
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }

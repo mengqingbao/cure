@@ -1,5 +1,6 @@
 package com.gqtcm.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,24 +16,50 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gqtcm.component.InMessageArrayAdapter;
 import com.gqtcm.model.InMessage;
 import com.gqtcm.persistence.InMessageStore;
+import com.gqtcm.util.SoundMeter;
 import com.gqtcm.util.XmppTool;
 
 public class InChatActivity extends Activity implements OnClickListener{
 
 	private ListView listView;
 	private InMessageArrayAdapter iadapter;
+	private View rl_voice, rl_input;
+	private ImageView voiceValueImage;
+	private View rcChat_popup;
+	//等待，记录，太短界面
+	private LinearLayout voice_rcd_hint_loading, voice_rcd_hint_rcding,voice_rcd_hint_tooshort;
+	private LinearLayout del_re;
+	private boolean isVocie = false;
+	private int flag=1;
+	private Handler mHandler = new Handler();
+	private SoundMeter mSensor;
+	private boolean isShosrt = false;
+	private ImageView img1, sc_img1;
+	//录音开始结束时间。
+	private long startVoiceT, endVoiceT; 
 	
+	//录音文件名称
+	private String voiceFileName;
 	//点
 	private ChatManager cm;
 	private Chat chat;
@@ -42,7 +69,8 @@ public class InChatActivity extends Activity implements OnClickListener{
 	private String nick;
 	private List<InMessage> msgs;
 	private Button sendBtn;
-	private Button fotoBtn,cameraBtn;
+	private Button fotoBtn,voictBtn,msgBtn;
+	private TextView voiceTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +103,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 		registerReceiver(mReceiver, intentFilter);
 		
 		init();
+		initRecordVoice();
 	}
 
 	private void init(){
@@ -84,9 +113,38 @@ public class InChatActivity extends Activity implements OnClickListener{
 	   sendBtn=(Button) this.findViewById(R.id.btn_send);
 	   sendBtn.setOnClickListener(this);
 	   this.fotoBtn=(Button) this.findViewById(R.id.foto_btn);
-	   this.cameraBtn=(Button) this.findViewById(R.id.btn_voice);
+	   this.voictBtn=(Button) this.findViewById(R.id.btn_voice);
+	   msgBtn=(Button) this.findViewById(R.id.msg_btn);
 	   fotoBtn.setOnClickListener(this);
-	   cameraBtn.setOnClickListener(this);
+	   voictBtn.setOnClickListener(this);
+	   msgBtn.setOnClickListener(this);
+
+	   //录音界面 输入页面
+	   rl_input = this.findViewById(R.id.rl_input);
+	   rl_voice = this.findViewById(R.id.rl_voice);
+	   voiceTextView=(TextView) this.findViewById(R.id.voiceTextView);
+	   voiceTextView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				//按下语音录制按钮时返回false执行父类OnTouch
+				return false;
+			}
+		});
+	   
+	}
+	//录音页面
+	public void initRecordVoice(){
+		voiceValueImage=(ImageView) this.findViewById(R.id.voice_value_image);
+		voice_rcd_hint_rcding = (LinearLayout) this
+				.findViewById(R.id.voice_rcd_hint_rcding);
+		voice_rcd_hint_loading = (LinearLayout) this
+				.findViewById(R.id.voice_rcd_hint_loading);
+		voice_rcd_hint_tooshort = (LinearLayout) this
+				.findViewById(R.id.voice_rcd_hint_tooshort);
+		del_re = (LinearLayout) this.findViewById(R.id.del_re);
+		rcChat_popup = this.findViewById(R.id.rcChat_popup);
+		mSensor = new SoundMeter();
+		img1 = (ImageView) this.findViewById(R.id.img1);
+		sc_img1 = (ImageView) this.findViewById(R.id.sc_img1);
 	}
 
 	@Override
@@ -121,7 +179,9 @@ public class InChatActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_voice:
-			System.out.println("voice");
+			rl_voice.setVisibility(View.VISIBLE);
+			rl_input.setVisibility(View.GONE);
+			isVocie=true;
 			break;
 		case R.id.btn_send:
 			sendMessage();	
@@ -129,23 +189,46 @@ public class InChatActivity extends Activity implements OnClickListener{
 		case R.id.foto_btn:
 			System.out.println("foto_btn");
 			break;
-		case R.id.button3:
-			Intent intent = new Intent();
-			intent.setClass(this, CameraActivity.class);
-			startActivity(intent);
+		case R.id.msg_btn:
+			rl_voice.setVisibility(View.GONE);
+			rl_input.setVisibility(View.VISIBLE);
+			isVocie=false;
 			break;
 		}
 	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
-
-		return super.onTouchEvent(event);
-
+private void updateDisplay(double signalEMA) {
+		
+		switch ((int) signalEMA) {
+		case 0:
+		case 1:
+			voiceValueImage.setImageResource(R.drawable.amp1);
+			break;
+		case 2:
+		case 3:
+			voiceValueImage.setImageResource(R.drawable.amp2);
+			
+			break;
+		case 4:
+		case 5:
+			voiceValueImage.setImageResource(R.drawable.amp3);
+			break;
+		case 6:
+		case 7:
+			voiceValueImage.setImageResource(R.drawable.amp4);
+			break;
+		case 8:
+		case 9:
+			voiceValueImage.setImageResource(R.drawable.amp5);
+			break;
+		case 10:
+		case 11:
+			voiceValueImage.setImageResource(R.drawable.amp6);
+			break;
+		default:
+			voiceValueImage.setImageResource(R.drawable.amp7);
+			break;
 		}
-	
-	
+	}	
 	//send message
 	public void sendMessage() {
 		EditText text = (EditText) this.findViewById(R.id.et_sendmessage);
@@ -156,13 +239,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 		// refresh ui
 		refresh(message,false);
 		
-		//save the message comed from friends
-		InMessageStore.getInstance().saveOrUpdate(userId, friendId,friendNick, message,false,nick,this);
-		try {
-			chat.sendMessage(message);
-		} catch (XMPPException e) {
-			System.out.println(e.getMessage()+"exception");
-		}
+		doSaveAndSend(message);
 		//clear the enter editText;
 		text.setText("");
 	}
@@ -172,5 +249,163 @@ public class InChatActivity extends Activity implements OnClickListener{
 		this.finish();
 	}
 
-	
+	//按下语音录制按钮时
+		@Override
+		public boolean onTouchEvent(MotionEvent event) {
+
+			if (!Environment.getExternalStorageDirectory().exists()) {
+				Toast.makeText(this, "No SDCard", Toast.LENGTH_LONG).show();
+				return false;
+			}
+
+			if (isVocie) {
+				System.out.println("1");
+				int[] location = new int[2];
+				voiceTextView.getLocationInWindow(location); // 获取在当前窗口内的绝对坐标
+				int btn_rc_Y = location[1];
+				int btn_rc_X = location[0];
+				int[] del_location = new int[2];
+				del_re.getLocationInWindow(del_location);
+				int del_Y = del_location[1];
+				int del_x = del_location[0];
+				if (event.getAction() == MotionEvent.ACTION_DOWN && flag == 1) {
+					if (!Environment.getExternalStorageDirectory().exists()) {
+						Toast.makeText(this, "No SDCard", Toast.LENGTH_LONG).show();
+						return false;
+					}
+					System.out.println("2");
+					if (event.getY() > btn_rc_Y && event.getX() > btn_rc_X) {//判断手势按下的位置是否是语音录制按钮的范围内
+						System.out.println("3");
+						voiceTextView.setBackgroundResource(R.drawable.voice_rcd_btn_pressed);
+						rcChat_popup.setVisibility(View.VISIBLE);
+						voice_rcd_hint_loading.setVisibility(View.VISIBLE);
+						voice_rcd_hint_rcding.setVisibility(View.GONE);
+						voice_rcd_hint_tooshort.setVisibility(View.GONE);
+						mHandler.postDelayed(new Runnable() {
+							public void run() {
+								if (!isShosrt) {
+									voice_rcd_hint_loading.setVisibility(View.GONE);
+									voice_rcd_hint_rcding
+											.setVisibility(View.VISIBLE);
+								}
+							}
+						}, 300);
+						img1.setVisibility(View.VISIBLE);
+						del_re.setVisibility(View.GONE);
+						startVoiceT = SystemClock.currentThreadTimeMillis();
+						voiceFileName = startVoiceT + ".amr";
+						start(voiceFileName);
+						flag = 2;
+					}
+				} else if (event.getAction() == MotionEvent.ACTION_UP && flag == 2) {//松开手势时执行录制完成
+					System.out.println("4");
+					voiceTextView.setBackgroundResource(R.drawable.voice_rcd_btn_nor);
+					if (event.getY() >= del_Y
+							&& event.getY() <= del_Y + del_re.getHeight()
+							&& event.getX() >= del_x
+							&& event.getX() <= del_x + del_re.getWidth()) {
+						rcChat_popup.setVisibility(View.GONE);
+						img1.setVisibility(View.VISIBLE);
+						del_re.setVisibility(View.GONE);
+						stop();
+						flag = 1;
+						File file = new File(android.os.Environment.getExternalStorageDirectory()+"/"
+										+ voiceFileName);
+						if (file.exists()) {
+							file.delete();
+						}
+					} else {
+
+						voice_rcd_hint_rcding.setVisibility(View.GONE);
+						stop();
+						endVoiceT = SystemClock.currentThreadTimeMillis();
+						flag = 1;
+						int time = (int) ((endVoiceT - startVoiceT) / 1000);
+						if (time < 1) {
+							isShosrt = true;
+							voice_rcd_hint_loading.setVisibility(View.GONE);
+							voice_rcd_hint_rcding.setVisibility(View.GONE);
+							voice_rcd_hint_tooshort.setVisibility(View.VISIBLE);
+							mHandler.postDelayed(new Runnable() {
+								public void run() {
+									voice_rcd_hint_tooshort
+											.setVisibility(View.GONE);
+									rcChat_popup.setVisibility(View.GONE);
+									isShosrt = false;
+								}
+							}, 500);
+							return false;
+						}
+						rcChat_popup.setVisibility(View.GONE);
+						//保存发送文件
+						doSaveAndSend(voiceFileName);
+
+					}
+				}
+				if (event.getY() < btn_rc_Y) {//手势按下的位置不在语音录制按钮的范围内
+					System.out.println("5");
+					Animation mLitteAnimation = AnimationUtils.loadAnimation(this,
+							R.anim.cancel_rc);
+					Animation mBigAnimation = AnimationUtils.loadAnimation(this,
+							R.anim.cancel_rc2);
+					img1.setVisibility(View.GONE);
+					del_re.setVisibility(View.VISIBLE);
+					del_re.setBackgroundResource(R.drawable.voice_rcd_cancel_bg);
+					if (event.getY() >= del_Y
+							&& event.getY() <= del_Y + del_re.getHeight()
+							&& event.getX() >= del_x
+							&& event.getX() <= del_x + del_re.getWidth()) {
+						del_re.setBackgroundResource(R.drawable.voice_rcd_cancel_bg_focused);
+						sc_img1.startAnimation(mLitteAnimation);
+						sc_img1.startAnimation(mBigAnimation);
+					}
+				} else {
+
+					img1.setVisibility(View.VISIBLE);
+					del_re.setVisibility(View.GONE);
+					del_re.setBackgroundResource(0);
+				}
+			}
+			return super.onTouchEvent(event);
+		}
+		private static final int POLL_INTERVAL = 300;
+
+		private Runnable mSleepTask = new Runnable() {
+			public void run() {
+				stop();
+			}
+		};
+		private Runnable mPollTask = new Runnable() {
+			public void run() {
+				double amp = mSensor.getAmplitude();
+				updateDisplay(amp);
+				mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+
+			}
+		};
+
+		private void start(String name) {
+			mSensor.start(name);
+			mHandler.postDelayed(mPollTask, POLL_INTERVAL);
+		}
+
+		private void stop() {
+			mHandler.removeCallbacks(mSleepTask);
+			mHandler.removeCallbacks(mPollTask);
+			mSensor.stop();
+			voiceValueImage.setImageResource(R.drawable.amp1);
+		}
+
+		
+		public void doSaveAndSend(String message){
+			refresh(message,false);
+			
+			//save the message comed from friends
+			InMessageStore.getInstance().saveOrUpdate(userId, friendId,friendNick, message,false,nick,this);
+			try {
+				chat.sendMessage(message);
+			} catch (XMPPException e) {
+				System.out.println(e.getMessage()+"exception");
+			}
+		}
 }

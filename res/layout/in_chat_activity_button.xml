@@ -49,7 +49,40 @@
             android:textSize="18sp" />
        
     </RelativeLayout>
-        <!-- 录音显示UI层-->
+    
+    <!-- 点击录音后显示此处 -->
+     <RelativeLayout
+        android:id="@+id/rl_voice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg1" 
+        android:layout_below="@+id/rl_input"
+        android:visibility="gone">
+
+		<Button
+		    android:id="@+id/msg_btn"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_centerVertical="true"
+		    android:layout_marginLeft="5dp"
+		    android:background="@drawable/chatting_setmode_msg_btn"
+		    android:text="" />
+		  <TextView
+            android:id="@+id/voiceTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@+id/msg_btn"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/chat_send_btn"
+            android:gravity="center"
+            android:text="按住说话" />
+       
+    </RelativeLayout>
+    <!-- 录音显示UI层-->
     <LinearLayout
         android:id="@+id/rcChat_popup"
         android:layout_width="fill_parent"

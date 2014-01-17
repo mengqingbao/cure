@@ -26,6 +26,8 @@ public class InChatLogin extends Activity implements OnClickListener {
 
 	private EditText useridText, pwdText;
 	private LinearLayout layout1, layout2;
+	private LinearLayout voice_rcd_hint_loading, voice_rcd_hint_rcding,
+	voice_rcd_hint_tooshort;
 
 	@Override
 
