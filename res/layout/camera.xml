@@ -1,55 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-    <RelativeLayout
-        android:id="@+id/camera_rl_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/preview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mmtitle_bg"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
 
-        <Button
-            android:id="@+id/camera_btn_back"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/selector_btn_back"
-            android:onClick="cancel"
-            android:paddingLeft="10dp"
-            android:text="返回"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
-
-         <Button
-            android:id="@+id/camera_btn_finish"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/selector_btn_add"
-            android:onClick="search"
-            android:paddingRight="10dp"
-            android:text="查找"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
-        <TextView
-            android:id="@+id/camera_title"
+        <SurfaceView
+            android:id="@+id/surfaceView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="图片编辑"
-            android:textColor="#ffffff"
-            android:textSize="20.0sp" />
-    </RelativeLayout>
+            android:layout_height="wrap_content" />
 
-	<FrameLayout 
-	    android:id="@+id/camera_preview"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-	</FrameLayout>
-	
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >"
+			<LinearLayout
+			    android:layout_width="fill_parent"
+			    android:layout_height="2px"
+			    android:layout_gravity="center_vertical"
+			    android:background="#ff0000" 
+			    android:layout_weight=".80" />
+            <Button
+                android:id="@+id/buttonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Click" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

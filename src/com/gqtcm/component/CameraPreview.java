@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -26,14 +27,18 @@ public class CameraPreview extends SurfaceView implements Callback {
 		if(holder.getSurface()==null){
 			return;
 		}
+		
+		try{
 		camera.stopPreview();
+		}catch(Exception e){
+			Log.d("gqtcmlog", "failed to create directory");
+		}
 		
 		try {
 			camera.setPreviewDisplay(holder);
 			camera.startPreview();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d("gqtcmlog", "failed to startPreview:"+e.getMessage()+e.getCause());
 		}		
 	}
 
@@ -43,8 +48,7 @@ public class CameraPreview extends SurfaceView implements Callback {
 			camera.setPreviewDisplay(hl);
 			camera.startPreview();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d("gqtcmlog", "failed to startPreview:"+e.getMessage()+e.getCause());
 		}
 	}
 
