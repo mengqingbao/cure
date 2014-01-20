@@ -4,121 +4,137 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
+import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PictureCallback;
-import android.net.Uri;
+import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.gqtcm.component.CameraPreview;
 
-public class CameraActivity extends Activity implements OnClickListener{
+public class CameraActivity extends Activity{
 		
-	private Camera camera;
-	private CameraPreview cameraPreview;
-	private Button btnFinish;
-		
-		@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	private static final String TAG = "CamTestActivity";
+	CameraPreview preview;
+	Button buttonClick;
+	Camera camera;
+	String fileName;
+	Activity act;
+	Context ctx;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ctx = this;
+		act = this;
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(R.layout.camera);
-		camera=getCameraInstance();
-		cameraPreview=new CameraPreview(this,camera);
-		FrameLayout preview= (FrameLayout) this.findViewById(R.id.camera_preview);
-		preview.addView(cameraPreview);
-		btnFinish=(Button) this.findViewById(R.id.camera_btn_finish);
-		btnFinish.setOnClickListener(this);
+		
+		preview = new CameraPreview(this, (SurfaceView)findViewById(R.id.surfaceView));
+		preview.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		((FrameLayout) findViewById(R.id.preview)).addView(preview);
+		preview.setKeepScreenOn(true);
+		
+		buttonClick = (Button) findViewById(R.id.buttonClick);
+		
+		buttonClick.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				//				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+				camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+			}
+		});
+		
+		buttonClick.setOnLongClickListener(new OnLongClickListener(){
+			@Override
+			public boolean onLongClick(View arg0) {
+				camera.autoFocus(new AutoFocusCallback(){
+					@Override
+					public void onAutoFocus(boolean arg0, Camera arg1) {
+						//camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+					}
+				});
+				return true;
+			}
+		});
 	}
 
-		public boolean checkCameraHardWare(Context context){
-			return true;
-		}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		//      preview.camera = Camera.open();
+		camera = Camera.open();
+		camera.startPreview();
+		preview.setCamera(camera);
+	}
 
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.camera_btn_finish:
-				camera.takePicture(null, null, pictureCallback);
-				break;
+	@Override
+	protected void onPause() {
+		if(camera != null) {
+			camera.stopPreview();
+			preview.setCamera(null);
+			camera.release();
+			camera = null;
+		}
+		super.onPause();
+	}
 
-			default:
-				break;
-			}
-			
+	private void resetCam() {
+		camera.startPreview();
+		preview.setCamera(camera);
+	}
+
+	ShutterCallback shutterCallback = new ShutterCallback() {
+		public void onShutter() {
+			// Log.d(TAG, "onShutter'd");
 		}
-		//初始化camera
-		public static Camera getCameraInstance(){
-			Camera c=null;
-			try{
-			 c=Camera.open();
-			}catch(Exception e){
-				return null;
-			}
-			return c;
-			
+	};
+
+	PictureCallback rawCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			// Log.d(TAG, "onPictureTaken - raw");
 		}
-		
-		private static final int MEDIA_TYPE_IMAGE=1;
-		private static final int MEDIA_TYPE_VIDEO=2;
-		private static Uri getOutputMediaFileUri(int type){
-			return Uri.fromFile(getOutputMediaFile(type));
-		}
-		private static File getOutputMediaFile(int type){
-			File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"gqtcm_tem");
-			//穿件文件夹
-			if(!mediaStorageDir.exists()){
-				if(!mediaStorageDir.mkdir()){
-					Log.d("gqtcmlog", "failed to create directory");
-					return null;
+	};
+
+	PictureCallback jpegCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			FileOutputStream outStream = null;
+			try {
+				// Write to SD Card
+				fileName = String.format("/sdcard/gqtcm/%d.jpg", System.currentTimeMillis());
+				File file=new File("/sdcard/gqtcm/");
+				if(!file.exists()){
+					System.out.println("file do not exits");
+					file.mkdir();
 				}
+				outStream = new FileOutputStream(fileName);
+				outStream.write(data);
+				outStream.close();
+				Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length);
+
+				resetCam();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
 			}
-			
-			//获得当前时间戳。
-			String timeStamp=new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
-			File mediaFile;
-			if(type==MEDIA_TYPE_IMAGE){
-				mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+timeStamp+".jgp");
-			}else if(type==MEDIA_TYPE_VIDEO){
-				mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+timeStamp+".mp4");
-			}else{
-				return null;
-			}
-			return mediaFile;
+			Log.d(TAG, "onPictureTaken - jpeg");
 		}
-		
-		
-		private PictureCallback pictureCallback = new PictureCallback(){
-			
-			public void onPictureTaken(byte[] data,Camera camera){
-				File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-				if(pictureFile==null){
-					Log.d("gqtcmlog", "Error creating media file check storage permissions:");
-					return;
-				}
-				FileOutputStream fos;
-				try {
-					fos = new FileOutputStream(pictureFile);
-					fos.write(data);
-					fos.close();
-				} catch (FileNotFoundException e) {
-					Log.d("gqtcmlog", "File not found: "+e.getMessage());
-
-				} catch (IOException e) {
-					Log.d("gqtcmlog", "Error accessing file:　"+e.getMessage());
-
-				}
-
-			}
-		};
+	};
 	}  
