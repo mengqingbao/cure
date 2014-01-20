@@ -1,6 +1,8 @@
 package com.gqtcm.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -168,7 +171,6 @@ public class InChatActivity extends Activity implements OnClickListener {
 		InMessageStore.getInstance().close();
 		this.finish();
 	}
-
 	// type:true message from yourself,false:msg from friend
 	private void refresh(String content, boolean type) {
 		InMessage msg = new InMessage();
@@ -213,9 +215,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.button1:
 			System.out.println("button1");
-			Intent intent = new Intent();
-			intent.setClass(this, CameraActivity.class);
-			this.startActivity(intent);
+			takeFoto();
 			break;
 		case R.id.button2:
 			System.out.println("button2");
@@ -466,9 +466,37 @@ public class InChatActivity extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
+		System.out.println(requestCode+resultCode);
+		// 处理结果
+		if (resultCode == 0) {
+			return;
+		}
+		if (data == null){
+			return;
+		}
+		System.out.println("result");
+		if (requestCode == PHOTO_GRAPH) {
+			Bundle extras = data.getExtras();
+			if (extras != null) {
+				Bitmap photo = extras.getParcelable("data");
+				// ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				// photo.compress(Bitmap.CompressFormat.JPEG, 75, stream);//
+				// (0-100)压缩文件
+				// 此处可以把Bitmap保存到sd卡中，具体请看：http://www.cnblogs.com/linjiqin/archive/2011/12/28/2304940.html
+				this.refresh(fileName, true);
+			}
+
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
+	//拍照
+	private int PHOTO_GRAPH=1;
+	private String fileName=null;
+	public void takeFoto(){
+		fileName="temp.jpg";//new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+".jpg";
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		/*intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(
+				Environment.getExternalStorageDirectory(), fileName)));*/
+		startActivityForResult(intent, PHOTO_GRAPH);
+	}
 }
