@@ -94,5 +94,8 @@
     </style>
 
     <style name="ButtonBarButton" />
-
+	<style name="inchatpopup" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/in_chat_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/in_chat_popup_out</item>
+    </style>
 </resources>
