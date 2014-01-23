@@ -1,6 +1,5 @@
 package com.gqtcm.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -13,14 +12,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.gqtcm.adapter.InMessageRecordArrayAdapter;
-import com.gqtcm.adapter.pop.Fr1PopMenuAdapter;
 import com.gqtcm.listener.Fr1ItemOnClickListener;
 import com.gqtcm.model.InMessage;
 import com.gqtcm.persistence.InMessageStore;
@@ -56,7 +52,11 @@ public class FragmentPage1 extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.frag1_add_chat:
-			 popMenu(addBtn);
+			Intent intent = new Intent();
+			intent.setClass(FragmentPage1.this.getActivity(), DoctorSearchActivity.class);
+			Bundle bundle = new Bundle();
+			intent.putExtras(bundle);
+			FragmentPage1.this.getActivity().startActivity(intent);
 			break;
 
 		default:
@@ -68,37 +68,9 @@ public class FragmentPage1 extends Fragment implements OnClickListener{
 	public void popMenu(View parent){
 		
 		if(popw==null){
-			
 			LayoutInflater layoutInflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View popwv=layoutInflater.inflate(R.layout.fragment_1_popmenu, null);
-			ListView lv_group=(ListView) popwv.findViewById(R.id.listView1);
-			List<String> list=new ArrayList<String>();
-			list.add("咨询");
-			list.add("问诊");
-			Fr1PopMenuAdapter gadpater=new Fr1PopMenuAdapter(this.getActivity(),list);
-			lv_group.setAdapter(gadpater);
 			popw=new PopupWindow(popwv,100,100);
-			lv_group.setOnItemClickListener(new OnItemClickListener(){
-
-				@Override
-				public void onItemClick(AdapterView<?> adpater, View view,
-						int position, long id) {
-					if(popw!=null){
-						popw.dismiss();
-						Intent intent = new Intent();
-						if(position==0){
-							intent.setClass(FragmentPage1.this.getActivity(), DoctorSearchActivity.class);
-						}else{
-							intent.setClass(FragmentPage1.this.getActivity(), DoctorSearchActivity.class);
-						}
-						Bundle bundle = new Bundle();
-						/*bundle.putString("friendId", user.getUserId());
-						bundle.putString("friendNick", user.getNick());*/
-						intent.putExtras(bundle);
-						FragmentPage1.this.getActivity().startActivity(intent);
-					}
-					
-				}});
 		}
 		popw.setFocusable(true);
 		popw.setOutsideTouchable(true);

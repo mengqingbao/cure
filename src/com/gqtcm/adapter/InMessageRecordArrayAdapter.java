@@ -61,16 +61,33 @@ public class InMessageRecordArrayAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		viewHolder.tvDate.setText(DateUtil.toString(item.getCreateDate()));
+		viewHolder.tvDate.setText(DateUtil.getDistanceTime(item.getCreateDate().getTime()));
 		//viewHolder.tvUserName.setText(item.getInUser().getNick());
 		if(!TextUtils.isEmpty(item.getContent())){
 		//SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, item.getContent());
-		viewHolder.tvContent.setText(item.getContent());
+			String str=item.getContent();
+			if(str.length()>15){
+				str=str.substring(0, 14)+"...";
+			}
+			if(item.isType()){
+				str="诊："+str;
+			}else{
+				str="问："+str;
+			}
+		viewHolder.tvContent.setText(str);
 		}else{
 			viewHolder.tvContent.setText(item.getContent());
 		}
 		viewHolder.tvNick.setText(item.getFriendNick());
-		viewHolder.tvStatu.setText("有效");
+		if (item.isType()) {
+			if (item.getCommentStatus() == 1) {
+				viewHolder.tvStatu.setText("有效");
+			} else if (item.getCommentStatus() == 0) {
+				viewHolder.tvStatu.setText("无效");
+			}
+		}else{
+			viewHolder.tvStatu.setText("");
+		}
 		return convertView;
 	}
 	

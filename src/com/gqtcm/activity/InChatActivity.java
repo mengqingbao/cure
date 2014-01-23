@@ -1,7 +1,9 @@
 package com.gqtcm.activity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -25,28 +28,25 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.gqtcm.adapter.pop.Fr1PopMenuAdapter;
 import com.gqtcm.component.InMessageArrayAdapter;
 import com.gqtcm.model.InMessage;
 import com.gqtcm.persistence.InMessageStore;
@@ -60,7 +60,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 	private View rl_voice, rl_input;
 	private ImageView voiceValueImage;
 	private View rcChat_popup;
-	// 等待，记录，太短界面
+	//等待，记录，太短界面
 	private LinearLayout voice_rcd_hint_loading, voice_rcd_hint_rcding,
 			voice_rcd_hint_tooshort;
 	private LinearLayout del_re;
@@ -85,7 +85,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 	private String nick;
 	private List<InMessage> msgs;
 	private Button sendBtn;
-	private Button fotoBtn, voictBtn, msgBtn, takeFotoBtn, fotoSetBtn;
+	private Button fotoBtn, voictBtn, msgBtn, takeFotoBtn, fotoSetBtn,btn3;
 	private TextView voiceTextView;
 
 	@Override
@@ -171,6 +171,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 		InMessageStore.getInstance().close();
 		this.finish();
 	}
+
 	// type:true message from yourself,false:msg from friend
 	private void refresh(String content, boolean type) {
 		InMessage msg = new InMessage();
@@ -196,29 +197,33 @@ public class InChatActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.btn_voice:
+		case R.id.btn_voice:  //enter voice model
 			rl_voice.setVisibility(View.VISIBLE);
 			rl_input.setVisibility(View.GONE);
 			isVocie = true;
 			break;
-		case R.id.btn_send:
+		case R.id.btn_send: //发送按钮
 			sendMessage();
 			break;
-		case R.id.foto_btn:
+		case R.id.foto_btn: //弹出发送图片弹窗
 			popMenu(fotoBtn);
 			System.out.println("foto_btn");
 			break;
-		case R.id.msg_btn:
+		case R.id.msg_btn: //返回文字输入
 			rl_voice.setVisibility(View.GONE);
 			rl_input.setVisibility(View.VISIBLE);
 			isVocie = false;
 			break;
-		case R.id.button1:
-			System.out.println("button1");
+		case R.id.button1: //拍照
+			popw.dismiss();
 			takeFoto();
 			break;
-		case R.id.button2:
-			System.out.println("button2");
+		case R.id.button2:  //选择照片
+			popw.dismiss();
+			fotoset();
+			break;
+		case R.id.button3:  //取消
+			popw.dismiss();
 			break;
 		}
 	}
@@ -287,7 +292,6 @@ public class InChatActivity extends Activity implements OnClickListener {
 		}
 
 		if (isVocie) {
-			System.out.println("1");
 			int[] location = new int[2];
 			voiceTextView.getLocationInWindow(location); // 获取在当前窗口内的绝对坐标
 			int btn_rc_Y = location[1];
@@ -301,7 +305,6 @@ public class InChatActivity extends Activity implements OnClickListener {
 					Toast.makeText(this, "No SDCard", Toast.LENGTH_LONG).show();
 					return false;
 				}
-				System.out.println("2");
 				if (event.getY() > btn_rc_Y && event.getX() > btn_rc_X) {// 判断手势按下的位置是否是语音录制按钮的范围内
 					System.out.println("3");
 					voiceTextView
@@ -327,7 +330,6 @@ public class InChatActivity extends Activity implements OnClickListener {
 					flag = 2;
 				}
 			} else if (event.getAction() == MotionEvent.ACTION_UP && flag == 2) {// 松开手势时执行录制完成
-				System.out.println("4");
 				voiceTextView
 						.setBackgroundResource(R.drawable.voice_rcd_btn_nor);
 				if (event.getY() >= del_Y
@@ -371,6 +373,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 					}
 					rcChat_popup.setVisibility(View.GONE);
 					// 保存发送文件
+					refresh(voiceFileName, false);
 					doSaveAndSend(voiceFileName);
 
 				}
@@ -431,8 +434,6 @@ public class InChatActivity extends Activity implements OnClickListener {
 	}
 
 	public void doSaveAndSend(String message) {
-		refresh(message, false);
-
 		// save the message comes from friends
 		InMessageStore.getInstance().saveOrUpdate(userId, friendId, friendNick,
 				message, false, nick, this);
@@ -453,7 +454,10 @@ public class InChatActivity extends Activity implements OnClickListener {
 			fotoSetBtn = (Button) popwv.findViewById(R.id.button2);
 			takeFotoBtn.setOnClickListener(this);
 			fotoSetBtn.setOnClickListener(this);
-			popw = new PopupWindow(popwv, 180, 180);
+			btn3=(Button) popwv.findViewById(R.id.button3);
+			btn3.setOnClickListener(this);
+			int with=this.getWindowManager().getDefaultDisplay().getWidth();
+			popw = new PopupWindow(popwv, with-10, 180);
 		}
 		popw.setFocusable(true);
 		popw.setOutsideTouchable(true);
@@ -463,40 +467,83 @@ public class InChatActivity extends Activity implements OnClickListener {
 				.getSystemService(Context.WINDOW_SERVICE);
 		popw.showAtLocation(fotoSetBtn, Gravity.BOTTOM, 0, 0);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		System.out.println(requestCode+resultCode);
 		// 处理结果
 		if (resultCode == 0) {
 			return;
 		}
-		if (data == null){
+		if (data == null) {
 			return;
 		}
-		System.out.println("result");
 		if (requestCode == PHOTO_GRAPH) {
 			Bundle extras = data.getExtras();
 			if (extras != null) {
 				Bitmap photo = extras.getParcelable("data");
-				// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				// photo.compress(Bitmap.CompressFormat.JPEG, 75, stream);//
-				// (0-100)压缩文件
-				// 此处可以把Bitmap保存到sd卡中，具体请看：http://www.cnblogs.com/linjiqin/archive/2011/12/28/2304940.html
-				this.refresh(fileName, true);
+				fileName = new SimpleDateFormat("yyyyMMdd_hhmmss")
+						.format(new Date()) + ".jpg";
+				File dir = new File("/sdcard/gqtcm");
+				if (!dir.exists()) {
+					dir.mkdir();
+				}
+				fileName = "/sdcard/gqtcm/" + fileName;
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(fileName);
+					photo.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+				} catch (FileNotFoundException e) {
+					Log.d("gqtcm", "save jpg error: "+e.getMessage());
+				} finally {
+					try {
+						if (fos != null) {
+							fos.flush();
+							fos.close();
+						}
+					} catch (IOException e) {
+					}
+				}
+				this.refresh(fileName, false);
+				//doSaveAndSend(fileName);
 			}
-
+			
+		}
+		if (requestCode == PHOTO_PICK) {
+			Uri uri=data.getData();
+			String[] filePathColumns={MediaStore.Images.Media.DATA};
+			Cursor cursor=this.getContentResolver().query(uri, filePathColumns, null, null, null);
+			cursor.moveToFirst();
+			int columnIndex=cursor.getColumnIndex(filePathColumns[0]);
+			String picPath=cursor.getString(columnIndex);
+			System.out.println(picPath);
+			/*for(int i=0;i<cursor.getColumnCount();i++){
+				System.out.println(i+"========="+cursor.getColumnName(i)+"+++++++++"+cursor.getString(i));
+			}*/
+			this.refresh(picPath, false);
+			//doSaveAndSend(picPath);
+			cursor.close();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+	// 拍照
+	private int PHOTO_GRAPH = 1;
+	private String fileName = null;
+
 	//拍照
-	private int PHOTO_GRAPH=1;
-	private String fileName=null;
-	public void takeFoto(){
-		fileName="temp.jpg";//new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+".jpg";
+	public void takeFoto() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		/*intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(
-				Environment.getExternalStorageDirectory(), fileName)));*/
+		/*
+		 * Uri uri=Uri.fromFile(new
+		 * File(Environment.getExternalStorageDirectory(), fileName));
+		 * intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+		 */
 		startActivityForResult(intent, PHOTO_GRAPH);
+	}
+	//图片浏览器
+	private int PHOTO_PICK=2;
+	public void fotoset(){
+		Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(intent, PHOTO_PICK);
 	}
 }

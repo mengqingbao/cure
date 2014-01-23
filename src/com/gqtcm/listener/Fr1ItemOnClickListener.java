@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gqtcm.activity.CareResultActivity;
+import com.gqtcm.activity.InChatActivity;
+import com.gqtcm.model.InMessage;
 
 public class Fr1ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	private Context context;
@@ -16,10 +18,28 @@ public class Fr1ItemOnClickListener implements  AdapterView.OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> adpater, View view, int postion, long id) {
 		Intent intent = new Intent();
-		intent.setClass(context, CareResultActivity.class);
 		Bundle bundle = new Bundle();
-		/*bundle.putString("friendId", user.getUserId());
-		bundle.putString("friendNick", user.getNick());*/
+		InMessage message = (InMessage) adpater.getItemAtPosition(postion);
+		System.out.println(message.getAction());
+		System.out.println(message.getFriendNick());
+		switch (message.getAction()) {
+		case 1:
+			intent.setClass(context, InChatActivity.class);
+			bundle.putString("docId", message.getFriendId());
+			bundle.putString("docNick", message.getFriendNick());
+			break;
+		case 2:
+			intent.setClass(context, CareResultActivity.class);
+			break;
+		case 3:
+			intent.setClass(context, InChatActivity.class);
+			bundle.putString("docId", message.getFriendId());
+			bundle.putString("docNick", message.getFriendNick());
+			break;
+		default:
+			intent.setClass(context, CareResultActivity.class);
+			break;
+		}
 		intent.putExtras(bundle);
 		context.startActivity(intent);
 	}

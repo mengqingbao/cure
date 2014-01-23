@@ -20,8 +20,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_width="70dp"
+        android:layout_height="fill_parent" 
         android:orientation="vertical">
         <TextView
             android:id="@+id/doctor_nick"
@@ -38,20 +38,24 @@
             android:id="@+id/doctor_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="100米以内"
-            android:textColor="#000" />
+            android:textSize="12sp"
+            android:textColor="#9A9A9A"
+            android:layout_marginLeft="15dp"
+            android:text="100米以内" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:gravity="center" >
 
         <TextView
             android:id="@+id/textView1"
+            android:layout_marginRight="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="#9A9A9A"
             android:text="疑难杂症" />
 
     </LinearLayout>
@@ -65,9 +69,12 @@
         <TextView
             android:id="@+id/docor_record"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:textSize="12sp"
             android:text="答 389/96%\n诊 214/98%"
-            />
+            android:textColor="#333"
+            android:layout_marginBottom="10dp"
+           android:gravity="bottom"/>
 
     </LinearLayout>
 

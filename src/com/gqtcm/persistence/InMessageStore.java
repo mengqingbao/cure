@@ -39,6 +39,8 @@ public class InMessageStore extends BaseDao {
 				inMessage.setContent(getString(c,"content"));
 				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
+				inMessage.setCommentStatus(c.getInt(c.getColumnIndex("commentStatus")));
+				inMessage.setAction(c.getInt(c.getColumnIndex("action")));
 				InUser user=new InUser();
 				user.setNick(getString(c,"nick"));
 				user.setUserId(c.getString(c.getColumnIndex("userId")));
@@ -88,6 +90,8 @@ public class InMessageStore extends BaseDao {
 				inMessage.setContent(getString(c,"content"));
 				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
+				inMessage.setCommentStatus(c.getInt(c.getColumnIndex("commentStatus")));
+				inMessage.setAction(c.getInt(c.getColumnIndex("action")));
 				InUser user=new InUser();
 				user.setNick(getString(c,"nick"));
 				user.setUserId(c.getString(c.getColumnIndex("userId")));

@@ -32,9 +32,11 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
@@ -244,4 +246,25 @@ public class MainTabActivity extends FragmentActivity{
 	        
 */	         
 		}
+
+		private boolean isExit=false;
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			
+			if(keyCode==KeyEvent.KEYCODE_BACK){
+				if(!isExit){
+					isExit=true;
+					Toast.makeText(this.getApplicationContext(), "再按一次退出", Toast.LENGTH_SHORT).show();
+					new Handler().postDelayed(new Runnable(){
+						public void run(){
+							isExit=false;
+						}
+					},2000);
+					return false;
+				}
+			}
+			
+			return super.onKeyDown(keyCode, event);
+		}
+		
 }

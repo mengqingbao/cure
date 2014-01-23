@@ -56,16 +56,16 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:background="@drawable/doctor_search_btn"
             android:layout_marginLeft="15dp"
             android:text="同城的" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:layout_toRightOf="@+id/button1"
             android:layout_marginLeft="15dp"
             android:background="@drawable/doctor_search_btn"
@@ -73,8 +73,8 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/button2"
             android:background="@drawable/doctor_search_btn"
@@ -86,24 +86,23 @@
         android:id="@+id/doctor_search_rl3"
          android:layout_below="@+id/doctor_search_rl2"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical|center"
-        android:background="@drawable/u42_normal" >
+        android:layout_height="50dp" >
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:src="@drawable/doctor_search_searchbtn" 
             android:layout_marginLeft="10dp"/>
         <EditText
             android:id="@+id/editText1"
             android:layout_toRightOf="@+id/imageView1"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="fill_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_centerInParent="true">
             <requestFocus />
         </EditText>
 

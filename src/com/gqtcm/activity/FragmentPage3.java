@@ -30,7 +30,8 @@ public class FragmentPage3 extends Fragment  implements OnClickListener{
 		 view= inflater.inflate(R.layout.fragment_3, container, false);
 
 		 listView = (ListView) view.findViewById(R.id.fragment_3_list);
-         listView.setAdapter(createAdpater(1));
+		 adapter=createAdpater(1);
+         listView.setAdapter(adapter);
          listView.setOnItemClickListener(new Fr3ItemOnClickListener(this.getActivity()));
          init(view);
          return view;		
@@ -84,7 +85,6 @@ public class FragmentPage3 extends Fragment  implements OnClickListener{
 			}
 			list.add(sv);
 		}
-         adapter = new Fr3ListAdapter(this.getActivity(),R.layout.in_frag3_list_item,list);
-		return adapter;
+         return new Fr3ListAdapter(this.getActivity(),R.layout.in_frag3_list_item,list);
 	}
 }

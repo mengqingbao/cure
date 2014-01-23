@@ -60,10 +60,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/frag2_list_item_2_1"
-            android:layout_marginLeft="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:textStyle="normal"
             android:text="大便难，便不尽"
             android:textColor="#9A9A9A"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
@@ -81,6 +83,6 @@
             android:layout_marginRight="10dp"
             android:background="#fff"
             android:textSize="18sp"
-            android:text=">" />
+            android:text=" > " />
     </RelativeLayout>
 </RelativeLayout>

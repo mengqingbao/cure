@@ -27,7 +27,6 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,10 +42,6 @@
             android:name="com.gqtcm.activity.InChatActivity"
             android:label="@string/title_activity_in_chat"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

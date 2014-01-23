@@ -10,6 +10,8 @@ public class InMessage {
 	private boolean type;  //type:true message from friends ,false:msg from yourself
 	private String friendNick;
 	private String friendId;
+	private int commentStatus;
+	private int action;
 	public InUser getInUser() {
 		return inUser;
 	}
@@ -46,4 +48,17 @@ public class InMessage {
 	public void setFriendId(String friendId) {
 		this.friendId = friendId;
 	}
+	public int getCommentStatus() {
+		return commentStatus;
+	}
+	public void setCommentStatus(int commentStatus) {
+		this.commentStatus = commentStatus;
+	}
+	public int getAction() {
+		return action;
+	}
+	public void setAction(int action) {
+		this.action = action;
+	}
+	
 }
