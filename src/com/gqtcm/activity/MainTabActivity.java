@@ -80,8 +80,8 @@ public class MainTabActivity extends FragmentActivity{
 		intent.putExtra("USERID", userid);
 		this.startService(intent);*/
 		
-       //消息监听
-       ChatManager cm = XmppTool.getConnection().getChatManager();
+       //消息监听 聊天必须start
+      /* ChatManager cm = XmppTool.getConnection().getChatManager();
        cm.addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean able) 
@@ -133,13 +133,13 @@ public class MainTabActivity extends FragmentActivity{
                       //Presence.Type有7中状态  
                       if (presence.getType().equals(Presence.Type.subscribe)) {//好友申请  
                             System.out.println("好友申请 +++++");
-						/*   确认                         Presence presence = new Presence(
+						   确认                         Presence presence = new Presence(
 						                                    Presence.Type.subscribed);//同意是
 						subscribed   拒绝是unsubscribe
 						                    presence.setTo(...);//接收方jid
 						                    presence.setFrom(...);//发送方jid
 						connection.sendPacket(presence);//connection是你自己的XMPPConnection链接
-*/                      } else if (presence.getType().equals(  
+                      } else if (presence.getType().equals(  
                               Presence.Type.subscribed)) {//同意添加好友  
                             
                       } else if (presence.getType().equals(  
@@ -157,7 +157,7 @@ public class MainTabActivity extends FragmentActivity{
                   }  
               }  
           };  
-          XmppTool.getConnection().addPacketListener(listener, filter);  
+          XmppTool.getConnection().addPacketListener(listener, filter);  聊天必须*/
        setContentView(R.layout.main_tab_layout);
         
         initView();
