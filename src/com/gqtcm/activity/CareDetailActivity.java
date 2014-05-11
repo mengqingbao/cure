@@ -1,7 +1,11 @@
 package com.gqtcm.activity;
 
+import java.util.List;
+
 import com.gqtcm.adapter.CareDetailListAdapter;
+import com.gqtcm.model.CareCondition;
 import com.gqtcm.model.CareItem;
+import com.gqtcm.persistence.CareConditionStroe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,12 +37,26 @@ public class CareDetailActivity extends Activity  implements OnClickListener{
 	}
 	
 	public void initData(){
-		for(int i=0;i<5;i++){
+		List<CareCondition> careConditions=CareConditionStroe.getInstance().queryPageList(0, 10, this, 1);
+		for(CareCondition cc:careConditions){
 			CareItem item=new CareItem();
-			item.setTitle("发烧");
-			item.setCondition0("不烧");
-			item.setCondition1("高烧");
-			item.setCondition2("低烧");
+			item.setTitle(cc.getName());
+			String[] cons=cc.getValue().split(";");
+			for(int i=0;i<cons.length;i++){
+				switch (i) {
+				case 0:
+					item.setCondition0(cons[i]);
+					break;
+				case 1:
+					item.setCondition1(cons[i]);				
+					break;
+				case 2:
+					item.setCondition2(cons[i]);
+					break;
+				default:
+					break;
+				}
+			}
 			adapter.add(item);
 		}
 		listView.setAdapter(adapter);

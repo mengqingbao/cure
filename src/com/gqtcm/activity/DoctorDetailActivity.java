@@ -21,7 +21,7 @@ public class DoctorDetailActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.doctor_detail);
 		String userId = getIntent().getStringExtra("docId");
-		doctor = DoctorStore.getInstance(this).getById(userId);
+		doctor = DoctorStore.getInstance(this).getById(userId,this);
 		backBtn=(Button) this.findViewById(R.id.doctor_detail_btn_back);
 		button2=(Button) this.findViewById(R.id.button2);
 		backBtn.setOnClickListener(this);
@@ -33,7 +33,8 @@ public class DoctorDetailActivity extends Activity implements OnClickListener{
 		if(doctor==null){
 			return;
 		}
-		((TextView)findViewById(R.id.doctor_detail_tv1)).setText(doctor.getNick()+"\n"+doctor.getProcince()+" "+doctor.getCity());
+		((TextView)findViewById(R.id.doctor_detail_tv1)).setText(doctor.getNick());
+		((TextView)findViewById(R.id.doctor_detail_tv1_ext)).setText(doctor.getProcince()+" "+doctor.getCity());
 		((TextView)findViewById(R.id.doctor_detail_tv2)).setText(doctor.getDesc());
 		((TextView)findViewById(R.id.doctor_detail_tv3)).setText(doctor.getLevelDes());
 		((TextView)findViewById(R.id.textView2)).setText(doctor.getInfo());
@@ -56,6 +57,9 @@ public class DoctorDetailActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.button2:
 			startChat();
+			break;
+		case R.id.doctor_detail_btn_back:
+			this.finish();
 			break;
 		default:
 			break;

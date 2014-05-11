@@ -1,5 +1,7 @@
 package com.gqtcm.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.ListView;
 import com.gqtcm.adapter.CareResultListAdapter;
 import com.gqtcm.listener.CareResultItemOnClickListener;
 import com.gqtcm.model.CareAdvice;
+import com.gqtcm.model.CareResult;
+import com.gqtcm.persistence.CareResultStroe;
 
 public class CareResultActivity extends Activity  implements OnClickListener {
 
@@ -31,10 +35,12 @@ public class CareResultActivity extends Activity  implements OnClickListener {
 	public void initData(){
 		listView=(ListView) this.findViewById(R.id.care_result_list_view);
 		adapter=new CareResultListAdapter(this,R.layout.care_result_item);
-		for(int i=0;i<5;i++){
+		List<CareResult> careResults = CareResultStroe.getInstance().queryPageList(0, 10, this, 1);
+		for(CareResult cr:careResults){
 			CareAdvice cc=new CareAdvice();
-			cc.setSubject("症状");
-			cc.setContent("两侧太阳穴胀痛；脉弦数...");
+			cc.setSubject(cr.getName());
+			cc.setContent(cr.getContent());
+			cc.setContentDetail(cr.getContentDetial());
 			adapter.add(cc);
 		}
 		listView.setAdapter(adapter);
@@ -44,7 +50,7 @@ public class CareResultActivity extends Activity  implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.care_advice_btn_back:
+		case R.id.care_result_btn_back:
 			this.finish();
 			break;
 

@@ -71,11 +71,11 @@ public class InChatLogin extends Activity implements OnClickListener {
 				@Override
 				public void run() {
 					handler.sendEmptyMessage(1);
-					try {
+					/*	try {
 						XmppTool.getConnection().login(USERID, PWD);
 						Presence presence = new Presence(
 								Presence.Type.available);
-						XmppTool.getConnection().sendPacket(presence);
+						XmppTool.getConnection().sendPacket(presence);*/
 
 						Intent intent = new Intent();
 						intent.setClass(InChatLogin.this, MainTabActivity.class);
@@ -94,11 +94,11 @@ public class InChatLogin extends Activity implements OnClickListener {
 						InChatLogin.this.startActivity(intent);
 						
 						InChatLogin.this.finish();
-					} catch (XMPPException e) {
+					/*} catch (XMPPException e) {
 						XmppTool.closeConnection();
 
 						handler.sendEmptyMessage(2);
-					}
+					}*/
 
 				}
 			});

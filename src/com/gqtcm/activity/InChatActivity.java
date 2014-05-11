@@ -111,8 +111,8 @@ public class InChatActivity extends Activity implements OnClickListener {
 		}
 		iadapter = new InMessageArrayAdapter(this, msgs);
 		listView.setAdapter(iadapter);
-		cm = XmppTool.getConnection().getChatManager();
-		chat = cm.createChat(friendId, null);
+		//cm = XmppTool.getConnection().getChatManager();
+		//chat = cm.createChat(friendId, null); //todo 阉割
 
 		// 注册接受其
 		IntentFilter intentFilter = new IntentFilter(
@@ -272,7 +272,7 @@ public class InChatActivity extends Activity implements OnClickListener {
 		// refresh ui
 		refresh(message, false);
 
-		doSaveAndSend(message);
+		//doSaveAndSend(message);
 		// clear the enter editText;
 		text.setText("");
 	}
