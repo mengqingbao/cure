@@ -4,9 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="50dp"
     android:orientation="horizontal" 
-    android:background="@color/white">
+    android:background="@drawable/abc_list_selector_holo_dark">
 
-        
 
         <RelativeLayout
             android:id="@+id/rl1"
@@ -32,7 +31,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:text="张仲景"
-                    android:textColor="#000066"
+                    android:textColor="@drawable/abc_list_selector_text_blue"
                     android:textSize="18sp" />
 
                 <TextView
@@ -43,7 +42,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:text="前天下午"
-                    android:textColor="#9A9A9A" />
+                    android:textColor="@drawable/abc_list_selector_text_9a9a9a" />
 
             </RelativeLayout>
 
@@ -60,6 +59,7 @@
                     android:layout_marginLeft="15dp"
                     android:text="问:肚子疼"
                     android:textSize="12sp"
+                    android:textColor="@drawable/abc_list_selector_text_9a9a9a"
                     android:textStyle="normal" />
 
                 <TextView
@@ -68,8 +68,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:text="有效"
-                    android:textColor="#000066"
-                     android:layout_alignParentRight="true"
+                    android:textColor="@drawable/abc_list_selector_text_blue"
+                    android:layout_alignParentRight="true"
                     android:textSize="12sp" />
 
             </RelativeLayout>

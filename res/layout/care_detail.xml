@@ -52,7 +52,7 @@
         android:layout_below="@+id/care_detail_rl_layout"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
+        android:background="@drawable/abc_list_selector_holo_dark"
         android:gravity="center_vertical" >
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="诊疗记录"
-            android:textColor="#000066"
+            android:textColor="@drawable/abc_list_selector_text_blue"
             android:textSize="16sp"
             android:layout_marginLeft="10dp" />
 
@@ -68,7 +68,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#9a9a9a"
+            android:textColor="@drawable/abc_list_selector_text_9a9a9a"
             android:textSize="14sp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/textView3"
@@ -78,7 +78,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#9a9a9a"
+            android:textColor="@drawable/abc_list_selector_text_9a9a9a"
             android:textSize="14sp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/textView4"
@@ -88,7 +88,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000066"
+            android:textColor="@drawable/abc_list_selector_text_blue"
             android:textSize="16sp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
@@ -131,8 +131,9 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            android:background="@drawable/u56_normal"
             android:text="提交确认" />
 
     </RelativeLayout>

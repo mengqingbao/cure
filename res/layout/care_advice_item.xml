@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minHeight="50dp"
-    android:background="@color/white"
+    android:background="@drawable/abc_list_selector_holo_dark"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
         <TextView
@@ -14,7 +14,7 @@
             android:layout_below="@+id/frag2_list_item_2_1"
             android:layout_marginLeft="12dp"
             android:text="症状"
-            android:textColor="#000066"
+            android:textColor="@drawable/abc_list_selector_text_blue"
             android:textSize="18sp" />
 		<TextView
 	        android:id="@+id/care_adivce_tv2"
@@ -23,8 +23,8 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_marginLeft="10dp"
-	        android:textSize="16sp" 
-	        android:textColor="#000"
+	        android:textSize="14sp" 
+	        android:textColor="@drawable/abc_list_selector_text_9a9a9a"
 	        android:text="11月22号" />
 
 

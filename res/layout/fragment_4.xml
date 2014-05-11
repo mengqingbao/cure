@@ -34,14 +34,42 @@
             android:textColor="#ffffff"
             android:textSize="20.0sp" />
     </RelativeLayout>
-     <WebView
-        android:id="@+id/webView"
+    <RelativeLayout
+        android:id="@+id/frag4_rl_layout1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
-      	android:layout_below="@id/frag4_rl_layout"
-        android:cacheColorHint="#00000000"
-        android:divider="@null"
-        android:dividerHeight="5dp"/>
+        android:layout_height="124dip"
+        android:layout_below="@id/frag4_rl_layout"
+        android:background="#f6f5f5"
+		 >
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_contains"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="6dip"
+            android:gravity="center"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+         android:id="@+id/frag4_rl_layout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/frag4_rl_layout1">
+
+        <ListView
+            android:id="@+id/fragment_4_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        
+    </RelativeLayout>
 
 </RelativeLayout>
