@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.gqtcm.database.DBHelper;
 import com.gqtcm.database.InSQLiteOpenHelper;
 import com.gqtcm.model.InMessage;
 
@@ -19,9 +20,9 @@ import android.database.sqlite.SQLiteDatabase;
 public class StoreUtil {
 
 	private static SQLiteDatabase getDb(Context context) {
-		// ¶ÁÈ¡²éÑ¯Êý¾Ý
-		InSQLiteOpenHelper isqloh = new InSQLiteOpenHelper(context);
-		return isqloh.getWritableDatabase();
+		//
+		DBHelper isqloh = new DBHelper(context);
+	    return isqloh.getReadableDatabase();
 	}
 
 	public static List<InMessage> getMessages(String userId, String friendId,
@@ -35,10 +36,10 @@ public class StoreUtil {
 		// String[] columns = new String[]{"content"};
 		// Cursor c = db.query("InMessage", columns, "userId='"+userId+"'",null,
 		// null, null, "Id");
-		if (c.moveToFirst()) {// ÅÐ¶ÏÓÎ±êÊÇ·ñÎª¿Õ
+		if (c.moveToFirst()) {// ï¿½Ð¶ï¿½ï¿½Î±ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½
 			for (int i = 0; i < c.getCount(); i++) {
 				InMessage inMessage = new InMessage();
-				c.move(i);// ÒÆ¶¯µ½Ö¸¶¨¼ÇÂ¼
+				c.move(i);// ï¿½Æ¶ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Â¼
 				inMessage.setContent(c.getString(c.getColumnIndex("content")));
 				result.add(inMessage);
 			}

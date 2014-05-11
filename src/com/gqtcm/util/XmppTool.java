@@ -74,8 +74,10 @@ public class XmppTool {
 	}
 
 	public static void closeConnection() {
-		con.disconnect();
-		con = null;
+		if (con != null){
+			con.disconnect();
+			con = null;
+		}
 	}
 
 	public static void addPacketListener(PacketListener myListener,
