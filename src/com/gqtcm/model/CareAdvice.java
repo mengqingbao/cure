@@ -6,6 +6,7 @@ public class CareAdvice {
 	private int id;
 	private String subject;
 	private String content;
+	private String contentDetail;
 	private Date createDate;
 	public int getId() {
 		return id;
@@ -30,6 +31,12 @@ public class CareAdvice {
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public String getContentDetail() {
+		return contentDetail;
+	}
+	public void setContentDetail(String contentDetail) {
+		this.contentDetail = contentDetail;
 	}
 
 }

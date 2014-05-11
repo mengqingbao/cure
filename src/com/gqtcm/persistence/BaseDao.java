@@ -1,10 +1,13 @@
 package com.gqtcm.persistence;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.gqtcm.database.DBHelper;
 
 public class BaseDao {
 	protected SQLiteDatabase db;
@@ -26,12 +29,16 @@ public class BaseDao {
 	
 	protected SQLiteDatabase getDb(boolean isRead,Context context) {
 		
-		/*InSQLiteOpenHelper isqloh = new InSQLiteOpenHelper(context);
+		DBHelper dbHelper = new DBHelper(context);
+		try {
+			dbHelper.createDataBase();
+		} catch (IOException e) {
+		}
 		if(isRead){
-			return isqloh.getReadableDatabase();
+			return dbHelper.getReadableDatabase();
 		}else{
-			return isqloh.getWritableDatabase();
-		}*/
-		return SQLiteDatabase.openOrCreateDatabase("data/data/com.gqtcm.activity/databases/mydata.db", null);
+			return dbHelper.getWritableDatabase();
+		}
+		//return SQLiteDatabase.openOrCreateDatabase("data/data/com.gqtcm.activity/databases/mydata.db", null);
 	}
 }

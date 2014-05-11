@@ -1,27 +1,36 @@
 package com.gqtcm.listener;
 
-import com.gqtcm.activity.CareAdviceActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-public class CareResultItemOnClickListener implements  AdapterView.OnItemClickListener{
+import com.gqtcm.activity.CareAdviceActivity;
+import com.gqtcm.model.CareAdvice;
+
+public class CareResultItemOnClickListener implements
+		AdapterView.OnItemClickListener {
 	private Context context;
-	public CareResultItemOnClickListener(Context context){
-		this.context=context;
+
+	public CareResultItemOnClickListener(Context context) {
+		this.context = context;
 	}
+
 	@Override
-	public void onItemClick(AdapterView<?> adpater, View view, int postion, long id) {
+	public void onItemClick(AdapterView<?> adpater, View view, int postion,
+			long id) {
+		CareAdvice careAdvice = (CareAdvice) adpater.getItemAtPosition(postion);
 		Intent intent = new Intent();
 		intent.setClass(context, CareAdviceActivity.class);
 		Bundle bundle = new Bundle();
-		/*bundle.putString("friendId", user.getUserId());
-		bundle.putString("friendNick", user.getNick());*/
-		intent.putExtras(bundle);
-		context.startActivity(intent);
+		bundle.putString("name", careAdvice.getSubject());
+		bundle.putString("content", careAdvice.getContentDetail());
+		//判断不为空后继续
+		if (careAdvice.getContentDetail() != null && careAdvice.getContentDetail()!="") {
+			intent.putExtras(bundle);
+			context.startActivity(intent);
+		}
 	}
 
 }

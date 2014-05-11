@@ -26,7 +26,7 @@ public class DoctorStore extends BaseDao  {
 		return objself;
 	}
 	
-	public List<Doctor> queryPage(String type,int start ,int limit) {
+	public List<Doctor> queryPage(String type,int start ,int limit,Context context) {
 		List<Doctor> result = new ArrayList<Doctor>();
 		db = getDb(true,context);
 		Cursor c = db.rawQuery(
@@ -46,6 +46,7 @@ public class DoctorStore extends BaseDao  {
 				obj.setZnormal(c.getInt(c.getColumnIndex("z_normal")));
 				obj.setZbad(c.getInt(c.getColumnIndex("z_bad")));
 				obj.setLevel(c.getInt(c.getColumnIndex("level")));
+				System.out.println("+++++");
 				switch (c.getInt(c.getColumnIndex("level"))) {
 				case 1:
 					obj.setLevelDes("民");
@@ -71,7 +72,7 @@ public class DoctorStore extends BaseDao  {
 		return result;
 	}
 	
-	public Doctor getById(String userId){
+	public Doctor getById(String userId,Context context){
 		db = getDb(true,context);
 		Cursor c = db.rawQuery("select * from doctor where userId=?",new String[] {userId});
 		int count=c.getCount();
